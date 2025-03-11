@@ -227,6 +227,8 @@ mRemoteNG_filename = ""
 pattern = re.compile('mrng([0-9]*)\.remmina')
 dir_remmina = os.path.expanduser('~') + '/.local/share/remmina'
 
+def truncate_filename(filename, max_length=255): return filename[:max_length]
+
 def PassDecrypt(password, key_from_mRemNG='mR3m'):
     encrypted_data = base64.b64decode(password)
     salt = associated_data = encrypted_data[:16]
@@ -247,7 +249,7 @@ def process_connection_ssh(cur_node,cur_group_name):
     global overwrite_files
     global clear_dbus_passwords
 
-    cur_file_name = cur_group_name+char_replacer_space+"ssh"+char_replacer_space+cur_node.attrib['Name']+char_replacer_space+cur_node.attrib['Hostname']+".remmina"
+    cur_file_name = truncate_filename(cur_group_name+char_replacer_space+"ssh"+char_replacer_space+cur_node.attrib['Name']+char_replacer_space+cur_node.attrib['Hostname'], 255 - len(dir_remmina) - 10)+".remmina"
     this_ssh_instance = default_ssh
     this_ssh_instance["group"] = cur_group_name
     this_ssh_instance["name"] = cur_node.attrib['Name']
@@ -287,7 +289,7 @@ def process_connection_rdp(cur_node,cur_group_name):
     global overwrite_files
     global clear_dbus_passwords
 
-    cur_file_name = cur_group_name+char_replacer_space+"rdp"+char_replacer_space+cur_node.attrib['Name']+char_replacer_space+cur_node.attrib['Hostname']+".remmina"
+    cur_file_name = truncate_filename(cur_group_name+char_replacer_space+"rdp"+char_replacer_space+cur_node.attrib['Name']+char_replacer_space+cur_node.attrib['Hostname'], 255 - len(dir_remmina) - 10)+".remmina"
     this_rdp_instance = default_rdp
     this_rdp_instance["group"] = cur_group_name
     this_rdp_instance["name"] = cur_node.attrib['Name']
@@ -327,7 +329,7 @@ def process_connection_vnc(cur_node,cur_group_name):
     global overwrite_files
     global clear_dbus_passwords
 
-    cur_file_name = cur_group_name+char_replacer_space+"vnc"+char_replacer_space+cur_node.attrib['Name']+char_replacer_space+cur_node.attrib['Hostname']+".remmina"
+    cur_file_name = truncate_filename(cur_group_name+char_replacer_space+"vnc"+char_replacer_space+cur_node.attrib['Name']+char_replacer_space+cur_node.attrib['Hostname'], 255 - len(dir_remmina) - 10)+".remmina"
     this_vnc_instance = default_vnc
     this_vnc_instance["group"] = cur_group_name
     this_vnc_instance["name"] = cur_node.attrib['Name']
